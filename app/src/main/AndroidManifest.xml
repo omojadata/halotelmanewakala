@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.vodamanewakala">
+    package="com.example.halotelmanewakala">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -21,7 +21,7 @@
         android:supportsRtl="true"
 
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-        <activity android:name="com.example.vodamanewakala.MainActivity"
+        <activity android:name="com.example.halotelmanewakala.MainActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,20 +29,20 @@
             </intent-filter>
         </activity>
        <receiver
-           android:name="com.example.vodamanewakala.SmsBroadcastReceiver"
+           android:name="com.example.halotelmanewakala.SmsBroadcastReceiver"
            android:enabled="true"
            android:exported="true">
            <intent-filter>
                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
            </intent-filter>
        </receiver>
-       <service android:name="com.example.vodamanewakala.MyAccessibilityService"
+       <service android:name="com.example.halotelmanewakala.MyAccessibilityService"
            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
            <intent-filter>
                <action android:name="android.accessibilityservice.AccessibilityService" />
            </intent-filter>
        </service>
-       <service android:name="com.example.vodamanewakala.ForegroundSmsService"/>
+       <service android:name="com.example.halotelmanewakala.ForegroundSmsService"/>
        <service
            android:name="com.romellfudi.ussdlibrary.USSDServiceKT"
            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
@@ -61,7 +61,7 @@
            android:exported="false" />
        <provider
            android:name="androidx.core.content.FileProvider"
-           android:authorities="com.example.vodamanewakala.fileprovider"
+           android:authorities="com.example.halotelmanewakala.fileprovider"
            android:exported="false"
            android:grantUriPermissions="true">
            <meta-data

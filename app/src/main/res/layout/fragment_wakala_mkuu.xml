@@ -5,7 +5,7 @@
     <data>
         <variable
             name="myWakalaMkuuViewModel"
-            type="com.example.vodamanewakala.viewmodel.WakalaMkuuViewModel" />
+            type="com.example.halotelmanewakala.viewmodel.WakalaMkuuViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

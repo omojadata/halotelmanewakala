@@ -5,7 +5,7 @@
     <data>
         <variable
             name="myBalanceViewModel"
-            type="com.example.vodamanewakala.viewmodel.BalanceViewModel" />
+            type="com.example.halotelmanewakala.viewmodel.BalanceViewModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
