@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.halotelmanewakala.R
 import com.example.halotelmanewakala.databinding.FloatinitemlistBinding
 import com.example.halotelmanewakala.db.FloatIn
+import com.example.halotelmanewakala.getComma
+import com.example.halotelmanewakala.getDate
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -101,17 +103,5 @@ class MyFloatInViewHolder(val binding: FloatinitemlistBinding):RecyclerView.View
          clickListener(floatIn)
      }
  }
-    @RequiresApi(Build.VERSION_CODES.N)
-    fun getComma(i:String):String?{
-        val ans= NumberFormat.getNumberInstance(Locale.US).format(i.toInt())
-        return ans.toString()
-    }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getDate(created:Long): String? {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        val instant = Instant.ofEpochMilli(created)
-        val date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-        return formatter.format(date).toString()
-    }
 }

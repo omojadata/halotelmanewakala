@@ -118,8 +118,8 @@ class ForegroundSmsService : Service() {
 
                                 val wakalaKeyId = searchWakala.wakalaid
                                 val wakalacontact = searchWakala.contact
-                                val fromwakalaname = searchWakala.vodaname
-                                val fromwakalacode = searchWakala.mpesa
+                                val fromwakalaname = searchWakala.haloname
+                                val fromwakalacode = searchWakala.halopesa
                                 val maxamount = searchWakala.maxamount
 
                                 val currentamount = amount.toInt()
@@ -157,7 +157,7 @@ class ForegroundSmsService : Service() {
                                         val timeM = getTime(madeAt)
                                         val timeC = getTime(createdAt)
                                         var smsText =
-                                            "Kiasi: Tsh $amounting, Mtandao: $fromnetwork itumwe wapi? Jibu Tigo, Airtelmoney au Halotel"
+                                            "Kiasi: Tsh $amounting, Mtandao: $fromnetwork itumwe wapi? Jibu Tigo, Airtel au Vodacom"
                                         sendSms(wakalacontact, smsText)
 
                                     } else {
@@ -468,7 +468,7 @@ class ForegroundSmsService : Service() {
             } else {
                 if (firstword == "WAKALAMKUU" && lastword == "WAKALAMKUU") {
                     val secondword = filterBody(smsbody, 2)
-                    if(secondword == "Vodacom" ) {
+                    if(secondword == "Halotel" ) {
                         // "WAKALAMKUU $firstword $amount $towakalacode $[towakalaname] $fromfloatinid $fromtransid $wakalano $fromnetwork $wakalakeyid WAKALAMKUU"
                         val firstW = filterBody(smsbody, 2)
                         val amount = filterBody(smsbody, 3)
@@ -498,8 +498,8 @@ class ForegroundSmsService : Service() {
                             //CHECK IF WAKALA MKUU EXISTS AND GET ID
                             val searchWakalaMkuu = when (fromnetwork) {
                                 "Tigo" -> repository.searchWakalaMkuuTigo(phone)?.wakalamkuuid
-                                "Airtelmoney" -> repository.searchWakalaMkuuAirtel(phone)?.wakalamkuuid
-                                "Halotel" -> repository.searchWakalaMkuuHalotel(phone)?.wakalamkuuid
+                                "Airtel" -> repository.searchWakalaMkuuAirtel(phone)?.wakalamkuuid
+                                "Vodacom" -> repository.searchWakalaMkuuVoda(phone)?.wakalamkuuid
                                 else -> ""
                             }
 
@@ -507,18 +507,18 @@ class ForegroundSmsService : Service() {
 
                             if (!searchWakalaMkuu.isNullOrBlank()) {
                                 //CHECK IF WAKALA EXISTS AND GET CODE
-                                val searchWakalaCode = repository.searchWakalaVoda(
+                                val searchWakalaCode = repository.searchWakalaHalotel(
                                     wakalaname,
                                     wakalacode,
                                     wakalakeyid
-                                )?.mpesa
+                                )?.halopesa
 
                                 //CHECK IF WAKALA EXISTS AND GET NAME
-                                val searchWakalaName = repository.searchWakalaVoda(
+                                val searchWakalaName = repository.searchWakalaHalotel(
                                     wakalaname,
                                     wakalacode,
                                     wakalakeyid
-                                )?.vodaname
+                                )?.haloname
 
                                 if (searchWakalaCode != null && searchWakalaName != null) {
                                     //INSERT FLOATOUT STATUS 0(PENDING)
@@ -554,7 +554,7 @@ class ForegroundSmsService : Service() {
                                             //DAILL USSD
                                             if(USSDController.verifyAccesibilityAccess(applicationContext) &&  USSDController.verifyOverLay(applicationContext) ){
                                                 dialUssd(
-                                                    "*150*00#",
+                                                    "*150*88#",
                                                     wakalacode,
                                                     wakalaname,
                                                     amount,
@@ -566,18 +566,6 @@ class ForegroundSmsService : Service() {
                                                     scope
                                                 )
                                             }
-//                                            dialUssd(
-//                                                "*150*00#",
-//                                                wakalacode,
-//                                                wakalaname,
-//                                                amount,
-//                                                modifiedAt,
-//                                                fromfloatinid,
-//                                                fromtransid,
-//                                                repository,
-//                                                applicationContext,
-//                                                scope
-//                                            )
                                         }
                                     } else {
                                         Toast.makeText(
@@ -593,7 +581,7 @@ class ForegroundSmsService : Service() {
                             }
                         }
                     }
-                } else if (firstword == "Tigo" || firstword == "Airtelmoney" || firstword == "Halotel") {
+                } else if (firstword == "Tigo" || firstword == "Airtel" || firstword == "Vodacom") {
 
                     val phone = filterNumber(smsAddress)
 
@@ -610,21 +598,21 @@ class ForegroundSmsService : Service() {
                             val wakalamkuunumber = when (firstword) {
                                 "Tigo" -> repository.getWakalaMkuu().tigophone
                                 "Airtel" -> repository.getWakalaMkuu().airtelphone
-                                "Halotel" -> repository.getWakalaMkuu().halophone
+                                "Vodacom" -> repository.getWakalaMkuu().vodaphone
                                 else -> ""
                             }
 
                             val towakalacode = when (firstword) {
                                 "Tigo" -> searchWakala.tigopesa
-                                "Airtelmoney" -> searchWakala.airtelmoney
-                                "Halotel" -> searchWakala.halopesa
+                                "Airtel" -> searchWakala.airtelmoney
+                                "Vodacom" -> searchWakala.mpesa
                                 else -> ""
                             }
 
                             val towakalaname = when (firstword) {
                                 "Tigo" -> searchWakala.tigoname
-                                "Airtelmoney" -> searchWakala.airtelname
-                                "Halotel" -> searchWakala.haloname
+                                "Airtel" -> searchWakala.airtelname
+                                "Vodacom" -> searchWakala.vodaname
                                 else -> ""
                             }
 
@@ -842,7 +830,6 @@ class ForegroundSmsService : Service() {
             madeatfloat
         )
     }
-
 
 }
 
