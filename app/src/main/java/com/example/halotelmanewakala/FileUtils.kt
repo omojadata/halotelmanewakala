@@ -144,6 +144,8 @@ fun checkFloatOutWords(str: String):Boolean{
     return containsWords(str,floatoutwords)
 }
 
+
+//Utambulisho wa muamala: 889912038. TSH 500,000 imewekwa kwa WAKALA: SAMWEL MELEKI SANGA, utambulisho 376977 wakati 05/10/2021 14:29:38. Kamisheni: TSH 0. Salio jipya la floti ni TSH 97,214. Ahsante!
  fun checkFloatIn(str: String): Boolean {
 
     //amount
@@ -162,7 +164,6 @@ fun checkFloatOutWords(str: String):Boolean{
     val balancedata = str.substringAfter("floti ni ")
      val balance = balancedata.substringBefore(".")
     val balanceRegex = Regex("^TSH \\d+(,\\d{3})*\$")
-//     Log.e("floatincheck","$balancedata")
     val checkBalance = balance.matches(balanceRegex)
 
     //Transid
@@ -189,17 +190,9 @@ fun checkFloatOutWords(str: String):Boolean{
 
     return checkName && checkAmount && checkTransid && checkBalance
 }
-//IN
-// Utambulisho wa muamala:658767567.WAKALA:Susan M Mbwagai,namba ya simu 255623641076 imetoa TSH 150,000 wakati 01/04/2021 14:54:38. Kamisheni: TSH 0.Salio jipya la floti ni TSH3,164,634. Asante!
-//OUT
-// Utambulisho wa muamala:658684058.TSH 100,000 imewekwa kwa WAKALA:Suzan M Mbwagai,utambulisho 334833 wakati 01/04/2021 13:20:18. Kamisheni: TSH 0.Salio jipya la floti ni TSH 2,714,634. Ahsante!
-
-//Utambulisho wa muamala:839726029. WAKALA: IDDI HASSANI HURUKU, namba ya simu 255620604076 imetoa TSH 100,000 wakati 26/08/2021 16:23:04. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,710,000. Ahsante
-//Utambulisho wa muamala: 839753514. TSH 150,000 imewekwa kwa WAKALA: JACKSON PHILIMON FESTORY, utambulisho 380760 wakati 26/08/2021 16:46:51. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,560,000. Ahsante!
 
 
 fun getFloatIn(str: String): Array<String> {
-
 
     //amount
      val amountdata = str.substringAfter("imetoa ")
@@ -209,8 +202,6 @@ fun getFloatIn(str: String): Array<String> {
     //name
      val namedata = str.substringAfter("WAKALA:")
      val name = namedata.substringBefore(",").trim()
-//     val namedata = str.substringAfter("- ")
-//     val name = namedata.substringBefore(".Salio ")
 
     //balance
     val balancedata = str.substringAfter("floti ni ")
@@ -223,15 +214,8 @@ fun getFloatIn(str: String): Array<String> {
 
     return arrayOf(amount, name, balance, transid)
 }
-//IN
-// Utambulisho wa muamala:658767567.WAKALA:Susan M Mbwagai,namba ya simu 255623641076 imetoa TSH 150,000 wakati 01/04/2021 14:54:38. Kamisheni: TSH 0.Salio jipya la floti ni TSH3,164,634. Asante!
-//OUT
-// Utambulisho wa muamala:658684058.TSH 100,000 imewekwa kwa WAKALA:Suzan M Mbwagai,utambulisho 334833 wakati 01/04/2021 13:20:18. Kamisheni: TSH 0.Salio jipya la floti ni TSH 2,714,634. Ahsante!
 
-//Utambulisho wa muamala:839726029. WAKALA: IDDI HASSANI HURUKU, namba ya simu 255620604076 imetoa TSH 100,000 wakati 26/08/2021 16:23:04. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,710,000. Ahsante
-//Utambulisho wa muamala: 839753514. TSH 150,000 imewekwa kwa WAKALA: JACKSON PHILIMON FESTORY, utambulisho 380760 wakati 26/08/2021 16:46:51. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,560,000. Ahsante!
-
-
+//Utambulisho wa muamala:889963019. WAKALA: LADISLAUS MIHIGO MWILILA, namba ya simu 255621534635 imetoa TSH 1,000,000 wakati 05/10/2021 15:17:39. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,097,214. Ahsante!
 fun checkFloatOut(str: String): Boolean {
     //amount
     val amountdata = str.substringBefore(" imewekwa")
@@ -276,7 +260,6 @@ fun checkFloatOut(str: String): Boolean {
 
     return checkName && checkAmount && checkTransid && checkBalance
 }
-
 
 
  fun getFloatOut(str: String): Array<String> {
@@ -331,16 +314,14 @@ suspend fun dialUssd(
             override fun responseInvoke(message: String) {
                 // message has the response string data
                 ussdchange.append("*150*88#")
-                ussdApi.send("3") {
-                    ussdchange.append(" 3")
+                ussdApi.send("1") {
+                    ussdchange.append(" 1")
                     ussdApi.send("1") {
                         ussdchange.append(" 1")
                         ussdApi.send(wakalacode) {
                             ussdchange.append(" code")
                             ussdApi.send(amount) {
                                 ussdchange.append(" amount")
-                                ussdApi.send("MAN") {
-                                    ussdchange.append(" muhudumu")
                                     ussdApi.send("0007") { message3 ->
                                         ussdchange.append(" PIN")
                                         if (message3.contains(wakalaname)) {
@@ -354,7 +335,6 @@ suspend fun dialUssd(
                                                 Log.e("USSDTAG1", it)
                                             }
                                         }
-                                    }
                                 }
                             }
                         }
@@ -363,7 +343,7 @@ suspend fun dialUssd(
             }
 
             override fun over(message: String) {
-                if (message.contains("Ombi lako limetumwa")) {
+                if (message.contains("Muamala wa kuweka pesa umefanikiwa.")) {
                     Log.e("USSDTAG2", ussdchange.toString())
                     if (ussdchange.toString().contains("Accept")) {
                         Log.e("USSDTAG22", ussdchange.toString())
