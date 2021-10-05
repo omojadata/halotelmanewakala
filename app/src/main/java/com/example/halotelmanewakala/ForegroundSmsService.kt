@@ -55,7 +55,7 @@ class ForegroundSmsService : Service() {
         )
         val notification = NotificationCompat.Builder(this, CHANNELID)
             .setContentTitle("MANE WAKALA IS ACTIVE")
-            .setContentText("VODACOM")
+            .setContentText("HALOTEL")
             .setAutoCancel(false)
             .setOngoing(true)
             .setSmallIcon(R.drawable.ic_launcher_foreground)

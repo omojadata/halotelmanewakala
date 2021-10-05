@@ -20,8 +20,8 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-var fromnetwork = "Vodacom"
-const val mtandao = "M-PESA"
+var fromnetwork = "Halotel"
+const val mtandao = "HaloPesa"
 const val errornumber = "+255683071757"
 //val contactnumber = "+255714363727"
 var floatinchange = StringBuilder()
@@ -75,9 +75,9 @@ fun filterNumber(str: String): String {
 }
 
 fun filterMoney(str: String): String {
-    val i = str.substringBefore(".00")
+//    val i = str.substringBefore(".00")
     val word = Regex("[^0-9]")
-    return word.replace(i, "")
+    return word.replace(str, "")
 }
 
 
@@ -119,9 +119,9 @@ fun getTime(created:Long): String? {
     return words.substring(0, words.length - 2)
 }
 
-var floatinwords = arrayOf("Imethibitishwa,","kutoka")
+var floatinwords = arrayOf("Utambulisho,","imetoa")
 
-var floatoutwords = arrayOf("imethibitishwa","toka")
+var floatoutwords = arrayOf("Utambulisho","imewekwa")
 
 fun containsWords(inputString: String, items: Array<String>): Boolean {
     var found = true
@@ -139,37 +139,37 @@ fun checkFloatInWords(str: String):Boolean{
     return containsWords(str,floatinwords)
 }
 
+
 fun checkFloatOutWords(str: String):Boolean{
     return containsWords(str,floatoutwords)
 }
 
-
  fun checkFloatIn(str: String): Boolean {
 
     //amount
-    val amount = filterBody(str, 9)
-//     Log.e("floatincheck","$amount")
-    val amountRegex = Regex("^Tsh\\d+(,\\d{3})*(\\.00)?\$")
+     val amountdata = str.substringAfter("imetoa ")
+     val amount = amountdata.substringBefore(" wakati")
+    val amountRegex = Regex("^TSH \\d+(,\\d{3})*\$")
     val checkAmount = amount.matches(amountRegex)
 
     //name
-    val namedata = str.substringAfter("- ")
-     val namedata2 = namedata.substringBefore(".Salio ")
+     val namedata = str.substringAfter("WAKALA:")
+     val name = namedata.substringBefore(",")
     val nameRegex = Regex("^[a-zA-Z0-9 ]*$")
-//     Log.e("floatincheck","$namedata2")
-    val checkName = namedata2.matches(nameRegex)
+    val checkName = name.matches(nameRegex)
 
     //balance
-    val balancedata = str.substringAfter("M-Pesa ni ")
-    val balanceRegex = Regex("^Tsh\\d+(,\\d{3})*(\\.00.)?\$")
+    val balancedata = str.substringAfter("floti ni ")
+     val balance = balancedata.substringBefore(".")
+    val balanceRegex = Regex("^TSH \\d+(,\\d{3})*\$")
 //     Log.e("floatincheck","$balancedata")
-    val checkBalance = balancedata.matches(balanceRegex)
+    val checkBalance = balance.matches(balanceRegex)
 
     //Transid
-    val transiddata = str.substringBefore(" Imethibitishwa,")
-//     Log.e("floatincheck","$transiddata")
-     val transiddata2 = filterBody(str, 1)
-    val checkTransid = transiddata.equals(transiddata2,false)
+     val transiddata = str.substringAfter("muamala:")
+     val transid= transiddata.substringBefore(".")
+     val transidRegex = Regex("^[0-9 ]*$")
+     val checkTransid = transid.matches(transidRegex)
 
     if (!checkName) {
         floatinchange.append("Name ")
@@ -189,51 +189,73 @@ fun checkFloatOutWords(str: String):Boolean{
 
     return checkName && checkAmount && checkTransid && checkBalance
 }
+//IN
+// Utambulisho wa muamala:658767567.WAKALA:Susan M Mbwagai,namba ya simu 255623641076 imetoa TSH 150,000 wakati 01/04/2021 14:54:38. Kamisheni: TSH 0.Salio jipya la floti ni TSH3,164,634. Asante!
+//OUT
+// Utambulisho wa muamala:658684058.TSH 100,000 imewekwa kwa WAKALA:Suzan M Mbwagai,utambulisho 334833 wakati 01/04/2021 13:20:18. Kamisheni: TSH 0.Salio jipya la floti ni TSH 2,714,634. Ahsante!
 
- fun getFloatIn(str: String): Array<String> {
+//Utambulisho wa muamala:839726029. WAKALA: IDDI HASSANI HURUKU, namba ya simu 255620604076 imetoa TSH 100,000 wakati 26/08/2021 16:23:04. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,710,000. Ahsante
+//Utambulisho wa muamala: 839753514. TSH 150,000 imewekwa kwa WAKALA: JACKSON PHILIMON FESTORY, utambulisho 380760 wakati 26/08/2021 16:46:51. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,560,000. Ahsante!
+
+
+fun getFloatIn(str: String): Array<String> {
+
 
     //amount
-    val amountdata = filterBody(str, 9)
-    val amount = filterMoney(amountdata)
+     val amountdata = str.substringAfter("imetoa ")
+     val amountdata2 = amountdata.substringBefore(" wakati")
+    val amount = filterMoney(amountdata2)
 
     //name
-     val namedata = str.substringAfter("- ")
-     val name = namedata.substringBefore(".Salio ")
+     val namedata = str.substringAfter("WAKALA:")
+     val name = namedata.substringBefore(",").trim()
+//     val namedata = str.substringAfter("- ")
+//     val name = namedata.substringBefore(".Salio ")
 
     //balance
-     val balancedata = str.substringAfter("M-Pesa ni ")
-    val balance = filterMoney(balancedata)
+    val balancedata = str.substringAfter("floti ni ")
+    val balancedata2 = balancedata.substringBefore(".")
+    val balance = filterMoney(balancedata2)
 
     //transid
-    val transid = filterBody(str, 1)
+    val transiddata = str.substringAfter("muamala:")
+    val transid= transiddata.substringBefore(".").trim()
 
     return arrayOf(amount, name, balance, transid)
 }
+//IN
+// Utambulisho wa muamala:658767567.WAKALA:Susan M Mbwagai,namba ya simu 255623641076 imetoa TSH 150,000 wakati 01/04/2021 14:54:38. Kamisheni: TSH 0.Salio jipya la floti ni TSH3,164,634. Asante!
+//OUT
+// Utambulisho wa muamala:658684058.TSH 100,000 imewekwa kwa WAKALA:Suzan M Mbwagai,utambulisho 334833 wakati 01/04/2021 13:20:18. Kamisheni: TSH 0.Salio jipya la floti ni TSH 2,714,634. Ahsante!
+
+//Utambulisho wa muamala:839726029. WAKALA: IDDI HASSANI HURUKU, namba ya simu 255620604076 imetoa TSH 100,000 wakati 26/08/2021 16:23:04. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,710,000. Ahsante
+//Utambulisho wa muamala: 839753514. TSH 150,000 imewekwa kwa WAKALA: JACKSON PHILIMON FESTORY, utambulisho 380760 wakati 26/08/2021 16:46:51. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,560,000. Ahsante!
 
 
 fun checkFloatOut(str: String): Boolean {
-
     //amount
-    val amount = filterBody(str, 8)
-    val amountRegex = Regex("^Tsh\\d+(,\\d{3})*(\\.00)?\$")
+    val amountdata = str.substringBefore(" imewekwa")
+    val amount = amountdata.substringAfter(". ")
+    val amountRegex = Regex("^TSH \\d+(,\\d{3})*\$")
     val checkAmount = amount.matches(amountRegex)
 
     //name
-    val namedata = str.substringAfter("- ")
-    val namedata2 = namedata.substringBefore(". Salio ")
+    val namedata = str.substringAfter("WAKALA:")
+    val name = namedata.substringBefore(",")
     val nameRegex = Regex("^[a-zA-Z0-9 ]*$")
-    val checkName = namedata2.matches(nameRegex)
+    val checkName = name.matches(nameRegex)
 
     //balance
-    val balancedata = str.substringAfter("akaunti yako ni ")
-    val balanceRegex = Regex("^Tsh\\d+(,\\d{3})*(\\.00)?\$")
-    val checkBalance = balancedata.matches(balanceRegex)
+    val balancedata = str.substringAfter("floti ni ")
+    val balance = balancedata.substringBefore(".")
+    val balanceRegex = Regex("^TSH \\d+(,\\d{3})*\$")
+    val checkBalance = balance.matches(balanceRegex)
 
     //Transid
-    val transiddata = str.substringBefore(" imethibitishwa")
-//     Log.e("floatincheck","$transiddata")
-    val transiddata2 = filterBody(str, 1)
-    val checkTransid = transiddata.equals(transiddata2,false)
+    val transiddata = str.substringAfter("muamala:")
+    val transid= transiddata.substringBefore(".")
+    val transidRegex = Regex("^[0-9 ]*$")
+    val checkTransid = transid.matches(transidRegex)
 
 
     if (!checkName) {
@@ -260,19 +282,24 @@ fun checkFloatOut(str: String): Boolean {
  fun getFloatOut(str: String): Array<String> {
 
      //amount
-     val amountdata = filterBody(str, 8)
-     val amount = filterMoney(amountdata)
+     val amountdata = str.substringBefore(" imewekwa")
+     val amountdata2 = amountdata.substringAfter(". ")
+     val amount = filterMoney(amountdata2)
 
      //name
-     val namedata = str.substringAfter("- ")
-     val name = namedata.substringBefore(". Salio ")
+     val namedata = str.substringAfter("WAKALA:")
+     val name = namedata.substringBefore(",").trim()
+//     val namedata = str.substringAfter("- ")
+//     val name = namedata.substringBefore(".Salio ")
 
      //balance
-     val balancedata = str.substringAfter("akaunti yako ni ")
-     val balance = filterMoney(balancedata)
+     val balancedata = str.substringAfter("floti ni ")
+     val balancedata2 = balancedata.substringBefore(".")
+     val balance = filterMoney(balancedata2)
 
      //transid
-     val transid = filterBody(str, 1)
+     val transiddata = str.substringAfter("muamala:")
+     val transid= transiddata.substringBefore(".").trim()
 
      return arrayOf(amount, name, balance, transid)
 
@@ -303,7 +330,7 @@ suspend fun dialUssd(
         object : USSDController.CallbackInvoke {
             override fun responseInvoke(message: String) {
                 // message has the response string data
-                ussdchange.append("*150*00#")
+                ussdchange.append("*150*88#")
                 ussdApi.send("3") {
                     ussdchange.append(" 3")
                     ussdApi.send("1") {
