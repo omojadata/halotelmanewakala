@@ -2,6 +2,7 @@ package com.example.halotelmanewakala.RecyclerView
 
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.halotelmanewakala.R
 import com.example.halotelmanewakala.databinding.FloatoutitemlistBinding
 import com.example.halotelmanewakala.db.FloatOut
+import com.example.halotelmanewakala.getComma
 import com.example.halotelmanewakala.getDate
 
 //class RecyclerViewWakalaMkuu(private val wakalaMkuuList:List<WakalaMkuu>):RecyclerView.Adapter<MyWakalaMkuuViewHolder>()
@@ -47,21 +49,41 @@ class MyFloatOutViewHolder(val binding: FloatoutitemlistBinding):RecyclerView.Vi
     @RequiresApi(Build.VERSION_CODES.O)
     fun bind(floatOut: FloatOut, clickListener: (FloatOut) -> Unit){
         if (floatOut.status == 0) {
+            //pending
             binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#add8e6"))
             // Set text color what should be for Bus left
         } else if (floatOut.status == 1) {
-            binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#00ab66"))
-            // Set text color what should be for upcoming buses
-        } else if (floatOut.status == 2) {
+            // "Ussd"
             binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#ffa500"))
             // Set text color what should be for upcoming buses
+        } else if (floatOut.status == 2) {
+            //Done
+            binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#00ab66"))
+            // Set text color what should be for upcoming buses
         } else if (floatOut.status == 3) {
+//            invalid
+            binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#808080"))
+            // Set text color what should be for upcoming buses
+        } else if (floatOut.status == 4) {
+//            Change
             binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#ff0f0f"))
             // Set text color what should be for upcoming buses
         }
-        binding.sectionone.text="Amount -"+floatOut.amount+"\n"+floatOut.comment+"\n"+floatOut.transid+"\n"+getDate(floatOut.createdat)
-        binding.sectiontwo.text=floatOut.wakalaname+"\n"+floatOut.wakalanumber
-        binding.sectionthree.text=floatOut.network+"\n"+ getDate(floatOut.modifiedat)
+0
+        if(floatOut.status==3){
+            binding.sectionone.text=floatOut.networksms
+            binding.sectiontwo.text=floatOut.comment
+            binding.sectionthree.text=getDate(floatOut.modifiedat)
+        }else if(floatOut.status==5){
+            binding.sectionone.text=floatOut.networksms
+            binding.sectiontwo.text=floatOut.comment
+            binding.sectionthree.text=getDate(floatOut.modifiedat)
+        }else{
+            binding.sectionone.text="Amount -"+floatOut.amount+"\n"+floatOut.comment+"\n"+floatOut.transid+"\n"+getDate(floatOut.createdat)
+            binding.sectiontwo.text=floatOut.wakalaname+"\n"+floatOut.wakalanumber
+            binding.sectionthree.text=floatOut.network+"\n"+ getDate(floatOut.modifiedat)
+        }
+
         binding.listItemLayout.setOnClickListener {
             clickListener(floatOut)
         }

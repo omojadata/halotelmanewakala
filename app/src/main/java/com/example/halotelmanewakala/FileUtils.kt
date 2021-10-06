@@ -21,8 +21,11 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 var fromnetwork = "Halotel"
-const val mtandao = "HaloPesa"
+ const val mtandao = "HaloPesa"
+//const val mtandao = "+255714363727"
 const val errornumber = "+255683071757"
+//const val mtandao = "+255714363727"
+//const val errornumber = "+255683071757"
 //val contactnumber = "+255714363727"
 var floatinchange = StringBuilder()
 var floatoutchange = StringBuilder()
@@ -119,7 +122,7 @@ fun getTime(created:Long): String? {
     return words.substring(0, words.length - 2)
 }
 
-var floatinwords = arrayOf("Utambulisho,","imetoa")
+var floatinwords = arrayOf("Utambulisho","imetoa")
 
 var floatoutwords = arrayOf("Utambulisho","imewekwa")
 
