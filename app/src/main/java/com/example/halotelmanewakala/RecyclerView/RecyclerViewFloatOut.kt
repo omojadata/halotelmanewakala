@@ -51,37 +51,38 @@ class MyFloatOutViewHolder(val binding: FloatoutitemlistBinding):RecyclerView.Vi
         if (floatOut.status == 0) {
             //pending
             binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#add8e6"))
+            binding.sectionone.text="Amount -"+floatOut.amount+"\n"+floatOut.comment+"\n"+floatOut.transid+"\n"+getDate(floatOut.createdat)
+            binding.sectiontwo.text=floatOut.wakalaname+"\n"+floatOut.wakalanumber
+            binding.sectionthree.text=floatOut.network+"\n"+ getDate(floatOut.modifiedat)
             // Set text color what should be for Bus left
         } else if (floatOut.status == 1) {
             // "Ussd"
             binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#ffa500"))
+            binding.sectionone.text="Amount -"+floatOut.amount+"\n"+floatOut.comment+"\n"+floatOut.transid+"\n"+getDate(floatOut.createdat)
+            binding.sectiontwo.text=floatOut.wakalaname+"\n"+floatOut.wakalanumber
+            binding.sectionthree.text=floatOut.network+"\n"+ getDate(floatOut.modifiedat)
             // Set text color what should be for upcoming buses
         } else if (floatOut.status == 2) {
             //Done
             binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#00ab66"))
-            // Set text color what should be for upcoming buses
-        } else if (floatOut.status == 3) {
-//            invalid
-            binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#808080"))
-            // Set text color what should be for upcoming buses
-        } else if (floatOut.status == 4) {
-//            Change
-            binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#ff0f0f"))
-            // Set text color what should be for upcoming buses
-        }
-0
-        if(floatOut.status==3){
-            binding.sectionone.text=floatOut.networksms
-            binding.sectiontwo.text=floatOut.comment
-            binding.sectionthree.text=getDate(floatOut.modifiedat)
-        }else if(floatOut.status==5){
-            binding.sectionone.text=floatOut.networksms
-            binding.sectiontwo.text=floatOut.comment
-            binding.sectionthree.text=getDate(floatOut.modifiedat)
-        }else{
             binding.sectionone.text="Amount -"+floatOut.amount+"\n"+floatOut.comment+"\n"+floatOut.transid+"\n"+getDate(floatOut.createdat)
             binding.sectiontwo.text=floatOut.wakalaname+"\n"+floatOut.wakalanumber
             binding.sectionthree.text=floatOut.network+"\n"+ getDate(floatOut.modifiedat)
+            // Set text color what should be for upcoming buses
+        } else if (floatOut.status == 3) {
+            //invalid
+            binding.sectionone.text=floatOut.networksms
+            binding.sectiontwo.text=floatOut.comment
+            binding.sectionthree.text=getDate(floatOut.modifiedat)
+            binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#808080"))
+            // Set text color what should be for upcoming buses
+        } else if (floatOut.status == 4) {
+            //Change
+            binding.sectionone.text=floatOut.networksms
+            binding.sectiontwo.text=floatOut.comment
+            binding.sectionthree.text=getDate(floatOut.modifiedat)
+            binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#ff0f0f"))
+            // Set text color what should be for upcoming buses
         }
 
         binding.listItemLayout.setOnClickListener {
