@@ -84,7 +84,6 @@ class MyFloatOutViewHolder(val binding: FloatoutitemlistBinding):RecyclerView.Vi
             binding.floatoutcardView.setCardBackgroundColor(Color.parseColor("#ff0f0f"))
             // Set text color what should be for upcoming buses
         }
-
         binding.listItemLayout.setOnClickListener {
             clickListener(floatOut)
         }
