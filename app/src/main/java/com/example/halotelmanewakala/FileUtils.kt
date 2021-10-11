@@ -23,7 +23,7 @@ import java.util.*
 var fromnetwork = "Halotel"
  const val mtandao = "HaloPesa"
 //const val mtandao = "+255714363727"
-const val errornumber = "+255683071757"
+const val errornumber = "+255714363727"
 //const val mtandao = "+255714363727"
 //const val errornumber = "+255683071757"
 //val contactnumber = "+255714363727"
