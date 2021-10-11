@@ -147,9 +147,20 @@ fun checkFloatOutWords(str: String):Boolean{
     return containsWords(str,floatoutwords)
 }
 
+fun main(){
+   val stri="Utambulisho wa muamala:889912038. TSH 500,000 imewekwa kwa WAKALA: SAMWEL MELEKI SANGA, utambulisho 376977 wakati 05/10/2021 14:29:38. Kamisheni: TSH 0. Salio jipya la floti ni TSH 97,214. Ahsante!"
+//    val stri= "Umepokea Tsh100,000.00 kutoka 787193129,AUDAX OSCAR MUJUNI. Salio jipya Tsh955,000.00.Muamala No: PP211005.1314.B61281"
+    checkFloatOut(stri)
+    println(checkFloatIn(stri).toString())
+    for (ele in getFloatIn(stri) ){
+        println(ele)
+    }
+}
 
-//Utambulisho wa muamala: 889912038. TSH 500,000 imewekwa kwa WAKALA: SAMWEL MELEKI SANGA, utambulisho 376977 wakati 05/10/2021 14:29:38. Kamisheni: TSH 0. Salio jipya la floti ni TSH 97,214. Ahsante!
- fun checkFloatIn(str: String): Boolean {
+
+//Utambulisho wa muamala:889963019. WAKALA: LADISLAUS MIHIGO MWILILA, namba ya simu 255621534635 imetoa TSH 1,000,000 wakati 05/10/2021 15:17:39. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,097,214. Ahsante!
+
+fun checkFloatIn(str: String): Boolean {
 
     //amount
      val amountdata = str.substringAfter("imetoa ")
@@ -217,8 +228,8 @@ fun getFloatIn(str: String): Array<String> {
 
     return arrayOf(amount, name, balance, transid)
 }
+//Utambulisho wa muamala: 889912038. TSH 500,000 imewekwa kwa WAKALA: SAMWEL MELEKI SANGA, utambulisho 376977 wakati 05/10/2021 14:29:38. Kamisheni: TSH 0. Salio jipya la floti ni TSH 97,214. Ahsante!
 
-//Utambulisho wa muamala:889963019. WAKALA: LADISLAUS MIHIGO MWILILA, namba ya simu 255621534635 imetoa TSH 1,000,000 wakati 05/10/2021 15:17:39. Kamisheni: TSH 0. Salio jipya la floti ni TSH 1,097,214. Ahsante!
 fun checkFloatOut(str: String): Boolean {
     //amount
     val amountdata = str.substringBefore(" imewekwa")
