@@ -331,7 +331,7 @@ class FloatOutViewModel(private val repository: MobileRepository) : ViewModel(),
             if (balanci >= floatOut.amount.toInt()) {
                 if(USSDController.verifyAccesibilityAccess(context) &&  USSDController.verifyOverLay(context) ){
                     dialUssd(
-                        "*150*00#",
+                        "*150*88#",
                         floatOut.wakalacode,
                         floatOut.wakalaname,
                         floatOut.amount,
